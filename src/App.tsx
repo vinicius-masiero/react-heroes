@@ -1,73 +1,35 @@
-import { ChangeEvent, useState } from "react";
-import { Hero } from "./types/hero";
-import "./App.css";
-import { HEROES } from "./data/mock-heroes";
+import { NavLink, Outlet } from "react-router-dom";
+import Messages from "./components/Messages";
 
 function App() {
-  const [heroes, setHeroes] = useState<Hero[]>(HEROES);
-  const [selectedHeroId, setSelectedHeroId] = useState<number | null>(null);
-
-  const selectedHero = heroes.find((hero) => hero.id === selectedHeroId);
-
-  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const updatedName = event.target.value;
-    setHeroes((prevHeroes) =>
-      prevHeroes.map((hero) => {
-        if (hero.id === selectedHeroId) {
-          return { ...hero, name: updatedName };
-        }
-        return hero;
-      }),
-    );
-  };
-
-  const handleSelectHero = (id: number) => {
-    setSelectedHeroId(id);
-  };
-
   return (
-    <div className="container mx-auto mt-5">
-      <h2 className="text-2xl">My heroes</h2>
-      <ul className="my-3 flex flex-col gap-2">
-        {heroes.map((hero) => (
-          <li
-            key={hero.id}
-            onClick={() => handleSelectHero(hero.id)}
-            className="flex cursor-pointer"
-          >
-            <span className="rounded-l bg-slate-700 p-2 text-white">
-              {hero.id}
-            </span>
-            <span className="w-1/4 rounded-r bg-slate-300 p-2">
-              {hero.name}
-            </span>
+    <>
+      <h1 className="text-center text-4xl font-bold text-slate-700">
+        React Heroes
+      </h1>
+      <nav className="mt-2 bg-slate-200 p-1">
+        <ul className="my-3 flex justify-center gap-4 text-2xl font-semibold uppercase">
+          <li>
+            <NavLink to="/dashboard" className="[&.active]:text-blue-500">
+              Dashboard
+            </NavLink>
           </li>
-        ))}
-      </ul>
-
-      {selectedHero && (
-        <>
-          <h2 className="text-2xl">Details</h2>
-          <div>
-            <span className="font-bold">ID:</span> {selectedHero.id}
-          </div>
-          <div className="space-x-2">
-            <span className="font-bold">Name:</span>
-            <span className="uppercase">{selectedHero.name}</span>
-          </div>
-          <div className="mt-3 flex flex-col gap-2 border-t">
-            <label>Hero name</label>
-            <input
-              type="text"
-              placeholder="Name"
-              className="w-1/4 rounded-lg border border-gray-300 p-2"
-              value={selectedHero.name}
-              onChange={handleNameChange}
-            />
-          </div>
-        </>
-      )}
-    </div>
+          <li>
+            <NavLink to="/heroes" end className="[&.active]:text-blue-500">
+              Heroes
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+      <div className="container mx-auto mt-5 flex justify-between gap-6">
+        <div className="flex-1">
+          <Outlet />
+        </div>
+        <div className="flex-1">
+          <Messages />
+        </div>
+      </div>
+    </>
   );
 }
 
