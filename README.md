@@ -5,5 +5,10 @@
 First, run the development server:
 
 ```bash
-npm run dev
+pnpm install
+pnpm dev
+```
+Run json-server
+```bash
+pnpm json-server src/data/heroes.json
 ```
